@@ -7,20 +7,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Hey, Listen!',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: ColorPrimario,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: ''),
     );
   }
   MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
@@ -117,12 +108,81 @@ class Registro extends StatelessWidget{
         title: Text("Registro",textAlign: TextAlign.center,),
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-          },
-          child: Text('Go back!'),
-        ),
+        child: Padding(padding: const EdgeInsets.all(15),
+          child: Column(
+            children: <Widget>[
+              Text(
+                "Ingrese usuario y contraseña",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 16
+                ),
+              ),
+              SizedBox(height: 15,),
+              TextField(
+                decoration: new InputDecoration(
+                    border: new OutlineInputBorder(),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(5.0),
+                      ),
+                    ),
+                    filled: true,
+                    hintStyle: new TextStyle(color: Colors.grey[800]),
+                    hintText: "Correo",
+                    fillColor: Color(0xFFEDEDED)),
+              ),
+              SizedBox(height: 15,),
+              TextFormField(
+                decoration: new InputDecoration(
+                    border: new OutlineInputBorder(),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(5.0),
+                      ),
+                    ),
+                    filled: true,
+                    hintStyle: new TextStyle(color: Colors.grey[800]),
+                    hintText: "Contraseña",
+                    fillColor: Color(0xFFEDEDED)),
+              ),
+              SizedBox(height: 15,),
+              TextFormField(
+                decoration: new InputDecoration(
+                    border: new OutlineInputBorder(),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(5.0),
+                      ),
+                    ),
+                    filled: true,
+                    hintStyle: new TextStyle(color: Colors.grey[800]),
+                    hintText: "Repetir Contraseña",
+                    fillColor: Color(0xFFEDEDED)),
+              ),
+              SizedBox(height: 20,),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  RaisedButton(
+                    color: Color(0xFF448AFF),
+                    onPressed: (){},
+                    child: Text("Listo",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        )
       ),
     );
   }
@@ -135,12 +195,66 @@ class Ingreso extends StatelessWidget{
         title: Text("Ingresar",textAlign: TextAlign.center,),
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-          },
-          child: Text('Go back!'),
+        child: Padding(padding: const EdgeInsets.all(15),
+          child: Column(
+          children: <Widget>[
+            SizedBox(height: 100,),
+            Text(
+              "Ingrese usuario y contraseña",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 16
+              ),
+            ),
+            SizedBox(height: 15,),
+            TextField(
+              decoration: new InputDecoration(
+                  border: new OutlineInputBorder(),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(5.0),
+                    ),
+                  ),
+                  filled: true,
+                  hintStyle: new TextStyle(color: Colors.grey[800]),
+                  hintText: "Correo",
+                  fillColor: Color(0xFFEDEDED)),
+            ),
+            SizedBox(height: 15,),
+            TextFormField(
+              decoration: new InputDecoration(
+                  border: new OutlineInputBorder(),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(5.0),
+                    ),
+                  ),
+                  filled: true,
+                  hintStyle: new TextStyle(color: Colors.grey[800]),
+                  hintText: "Contraseña",
+                  fillColor: Color(0xFFEDEDED)),
+            ),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                RaisedButton(
+                  color: Color(0xFF448AFF),
+                  onPressed: (){},
+                  child: Text("Listo",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
         ),
+        )
       ),
     );
   }
