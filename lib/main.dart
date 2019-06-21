@@ -79,7 +79,9 @@ class _MyHomePageState extends State<MyHomePage> {
             RaisedButton(
               color: Color(0xFF448AFF),
               padding: EdgeInsets.only(left: 45 ,top: 10 ,right:45 ,bottom:10 ),
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Ingreso()));
+              },
               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
               child: Text(
                   'Ingresar',
@@ -91,7 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
             RaisedButton(
               color: Color(0xFF448AFF),
               padding: EdgeInsets.only(left: 35 ,top: 10 ,right:35 ,bottom:10 ),
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Registro()));
+              },
               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
               child: Text(
                   'Registrarse',
@@ -100,6 +104,42 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+class Registro extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Registro",textAlign: TextAlign.center,),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            // Navigate back to first route when tapped.
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+class Ingreso extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Ingresar",textAlign: TextAlign.center,),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            // Navigate back to first route when tapped.
+          },
+          child: Text('Go back!'),
         ),
       ),
     );
