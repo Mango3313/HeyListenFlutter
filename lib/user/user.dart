@@ -50,9 +50,49 @@ class MapInitialState extends State<MapInitial>{
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text("Drawer"),
+                decoration: BoxDecoration(
+                  color: Color(0xFF448AFF),
+                ),
+              ),
+              ListTile(
+                title: Text("Ubicaciones"),
+                onTap: (){
+
+                },
+              ),
+              ListTile(
+                title: Text("Perfil"),
+                onTap: (){
+
+                },
+              ),
+              Divider(
+
+              ),
+              ListTile(
+                title: Text("Configuración"),
+                onTap: (){
+
+                },
+              ),
+              ListTile(
+                title: Text("Salir"),
+                onTap: (){
+                  
+                },
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
-          title: Text('Maps Sample App'),
-          backgroundColor: Colors.green[700],
+          title: Text('Bienvenido'),
+          backgroundColor: ColorPrimario,
         ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,

@@ -306,7 +306,7 @@ class IngresoState extends State<Ingreso>{
                     RaisedButton(
                       color: Color(0xFF448AFF),
                       onPressed: (){
-                        Navigator.pushNamed(context, '/usuario');
+                        Navigator.pushReplacementNamed(context, '/usuario');
                       },
                       child: Text("Listo",
                         style: TextStyle(
