@@ -8,10 +8,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hey, Listen!',
+      initialRoute: "/",
+      routes: {
+        '/':(context) => MyHomePage(),
+        '/Registro': (context) => Registro(),
+        '/Ingreso':(context) => Ingreso()
+      },
       theme: ThemeData(
         primarySwatch: ColorPrimario,
       ),
-      home: MyHomePage(title: ''),
     );
   }
   MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
@@ -71,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Color(0xFF448AFF),
               padding: EdgeInsets.only(left: 45 ,top: 10 ,right:45 ,bottom:10 ),
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Ingreso()));
+                Navigator.pushNamed(context,'/Ingreso');
               },
               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
               child: Text(
@@ -85,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Color(0xFF448AFF),
               padding: EdgeInsets.only(left: 35 ,top: 10 ,right:35 ,bottom:10 ),
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Registro()));
+                Navigator.pushNamed(context,'/Registro');
               },
               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
               child: Text(
@@ -100,7 +105,18 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-class Registro extends StatelessWidget{
+class Registro extends StatefulWidget{
+  @override
+  RegistroState createState() => RegistroState();
+}
+
+class RegistroState extends State<Registro>{
+  bool _obscureText = true;
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,86 +124,120 @@ class Registro extends StatelessWidget{
         title: Text("Registro",textAlign: TextAlign.center,),
       ),
       body: Center(
-        child: Padding(padding: const EdgeInsets.all(15),
-          child: Column(
-            children: <Widget>[
-              Text(
-                "Ingrese usuario y contraseña",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontSize: 16
+          child: Padding(padding: const EdgeInsets.all(15),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  "Ingrese usuario y contraseña",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: 16
+                  ),
                 ),
-              ),
-              SizedBox(height: 15,),
-              TextField(
-                decoration: new InputDecoration(
-                    border: new OutlineInputBorder(),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(5.0),
+                SizedBox(height: 15,),
+                TextField(
+                  decoration: new InputDecoration(
+                      border: new OutlineInputBorder(),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(5.0),
+                        ),
                       ),
-                    ),
-                    filled: true,
-                    hintStyle: new TextStyle(color: Colors.grey[800]),
-                    hintText: "Correo",
-                    fillColor: Color(0xFFEDEDED)),
-              ),
-              SizedBox(height: 15,),
-              TextFormField(
-                decoration: new InputDecoration(
-                    border: new OutlineInputBorder(),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(5.0),
+                      filled: true,
+                      hintStyle: new TextStyle(color: Colors.grey[800]),
+                      hintText: "Correo",
+                      fillColor: Color(0xFFEDEDED)),
+                ),
+                SizedBox(height: 15,),
+                TextFormField(
+                  obscureText: _obscureText,
+                  decoration: new InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: _toggle,
                       ),
-                    ),
-                    filled: true,
-                    hintStyle: new TextStyle(color: Colors.grey[800]),
-                    hintText: "Contraseña",
-                    fillColor: Color(0xFFEDEDED)),
-              ),
-              SizedBox(height: 15,),
-              TextFormField(
-                decoration: new InputDecoration(
-                    border: new OutlineInputBorder(),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(5.0),
+                      border: new OutlineInputBorder(),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(5.0),
+                        ),
                       ),
-                    ),
-                    filled: true,
-                    hintStyle: new TextStyle(color: Colors.grey[800]),
-                    hintText: "Repetir Contraseña",
-                    fillColor: Color(0xFFEDEDED)),
-              ),
-              SizedBox(height: 20,),
+                      filled: true,
+                      hintStyle: new TextStyle(color: Colors.grey[800]),
+                      hintText: "Contraseña",
+                      fillColor: Color(0xFFEDEDED)),
+                ),
+                SizedBox(height: 15,),
+                TextFormField(
+                  obscureText: _obscureText,
+                  decoration: new InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: _toggle,
+                      ),
+                      border: new OutlineInputBorder(),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(5.0),
+                        ),
+                      ),
+                      filled: true,
+                      hintStyle: new TextStyle(color: Colors.grey[800]),
+                      hintText: "Repetir Contraseña",
+                      fillColor: Color(0xFFEDEDED)),
+                ),
+                SizedBox(height: 20,),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  RaisedButton(
-                    color: Color(0xFF448AFF),
-                    onPressed: (){},
-                    child: Text("Listo",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    RaisedButton(
+                      color: Color(0xFF448AFF),
+                      onPressed: (){},
+                      child: Text("Listo",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        )
+                    )
+                  ],
+                ),
+              ],
+            ),
+          )
       ),
     );
   }
 }
-class Ingreso extends StatelessWidget{
+
+class Ingreso extends StatefulWidget{
+  @override
+  IngresoState createState() => IngresoState();
+}
+
+class IngresoState extends State<Ingreso>{
+  bool _obscureText = true;
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,66 +245,77 @@ class Ingreso extends StatelessWidget{
         title: Text("Ingresar",textAlign: TextAlign.center,),
       ),
       body: Center(
-        child: Padding(padding: const EdgeInsets.all(15),
-          child: Column(
-          children: <Widget>[
-            SizedBox(height: 100,),
-            Text(
-              "Ingrese usuario y contraseña",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 16
-              ),
-            ),
-            SizedBox(height: 15,),
-            TextField(
-              decoration: new InputDecoration(
-                  border: new OutlineInputBorder(),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(5.0),
-                    ),
-                  ),
-                  filled: true,
-                  hintStyle: new TextStyle(color: Colors.grey[800]),
-                  hintText: "Correo",
-                  fillColor: Color(0xFFEDEDED)),
-            ),
-            SizedBox(height: 15,),
-            TextFormField(
-              decoration: new InputDecoration(
-                  border: new OutlineInputBorder(),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(5.0),
-                    ),
-                  ),
-                  filled: true,
-                  hintStyle: new TextStyle(color: Colors.grey[800]),
-                  hintText: "Contraseña",
-                  fillColor: Color(0xFFEDEDED)),
-            ),
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+          child: Padding(padding: const EdgeInsets.all(15),
+            child: Column(
               children: <Widget>[
-                RaisedButton(
-                  color: Color(0xFF448AFF),
-                  onPressed: (){},
-                  child: Text("Listo",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16
-                    ),
+               // SizedBox(height: 100,),
+                Text(
+                  "Ingrese usuario y contraseña",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: 16
                   ),
-                )
+                ),
+                SizedBox(height: 15,),
+                TextField(
+                  decoration: new InputDecoration(
+                      border: new OutlineInputBorder(),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(5.0),
+                        ),
+                      ),
+                      filled: true,
+                      hintStyle: new TextStyle(color: Colors.grey[800]),
+                      hintText: "Correo",
+                      fillColor: Color(0xFFEDEDED)),
+                ),
+                SizedBox(height: 15,),
+                TextFormField(
+                  obscureText: _obscureText,
+                  decoration: new InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: _toggle,
+                      ),
+                      border: new OutlineInputBorder(),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEDEDED), width: 0.0),
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(5.0),
+                        ),
+                      ),
+                      filled: true,
+                      hintStyle: new TextStyle(color: Colors.grey[800]),
+                      hintText: "Contraseña",
+                      fillColor: Color(0xFFEDEDED)),
+                ),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    RaisedButton(
+                      color: Color(0xFF448AFF),
+                      onPressed: (){},
+                      child: Text("Listo",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-        )
+          )
       ),
     );
   }
