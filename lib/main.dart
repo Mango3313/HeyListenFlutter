@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './user/user.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/':(context) => MyHomePage(),
         '/Registro': (context) => Registro(),
-        '/Ingreso':(context) => Ingreso()
+        '/Ingreso':(context) => Ingreso(),
+        '/usuario':(context)=>MapInitial()
       },
       theme: ThemeData(
         primarySwatch: ColorPrimario,
@@ -303,7 +305,9 @@ class IngresoState extends State<Ingreso>{
                   children: <Widget>[
                     RaisedButton(
                       color: Color(0xFF448AFF),
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.pushNamed(context, '/usuario');
+                      },
                       child: Text("Listo",
                         style: TextStyle(
                             color: Colors.white,
