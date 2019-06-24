@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/foundation.dart';
+import 'package:permission_handler/permission_handler.dart';
 void main() => runApp(MapApp());
 MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
   50:const Color(0xFF3F51B5),
@@ -36,8 +36,9 @@ class MapInitial extends StatefulWidget{
 class MapInitialState extends State<MapInitial>{
   Future<bool> permisos() async{
     GeolocationStatus geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
-    debugPrint(geolocationStatus.toString());
-    return false;
+    if(geolocationStatus == GeolocationStatus.denied){
+      PermissionHandler().requestPermissions([PermissionGroup.locationWhenInUse]);
+    }
   }
   GoogleMapController mapController;
   final LatLng _center = const LatLng(20.704070, -100.443852);
