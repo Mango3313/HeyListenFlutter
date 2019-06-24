@@ -36,7 +36,7 @@ class MapInitial extends StatefulWidget{
 class MapInitialState extends State<MapInitial>{
   GoogleMapController mapController;
 
-  final LatLng _center = const LatLng(45.521563, -122.677433);
+  final LatLng _center = const LatLng(20.704070, -100.443852);
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -73,7 +73,7 @@ class MapInitialState extends State<MapInitial>{
                 leading: Icon(Icons.gps_fixed),
                 title: Text("Ubicaciones"),
                 onTap: (){
-
+                  Navigator.pushNamed(context, '/usuario/ubicaciones');
                 },
               ),
               Divider(
@@ -97,7 +97,7 @@ class MapInitialState extends State<MapInitial>{
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
             target: _center,
-            zoom: 11.0,
+            zoom: 18.0,
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -168,7 +168,18 @@ class StateUbicaciones extends State<Ubicaciones>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-
+      appBar: AppBar(
+        title: Text("Mis ubicaciones"),
+      ),
+      body:
+          ListView(
+            children: <Widget>[
+              ListTile(
+                title: Text("Ubicacion 1"),
+                trailing: Icon(Icons.delete),
+              ),
+            ],
+      ),
     );
   }
 }

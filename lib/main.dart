@@ -14,7 +14,9 @@ class MyApp extends StatelessWidget {
         '/':(context) => MyHomePage(),
         '/Registro': (context) => Registro(),
         '/Ingreso':(context) => Ingreso(),
-        '/usuario':(context)=>MapInitial()
+        '/usuario':(context)=>MapInitial(),
+        '/usuario/profile':(context)=> Perfil(),
+        '/usuario/ubicaciones':(context)=> Ubicaciones()
       },
       theme: ThemeData(
         primarySwatch: ColorPrimario,
