@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import './user/user.dart';
 
 void main() => runApp(MyApp());
@@ -80,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Color(0xFF448AFF),
               padding: EdgeInsets.only(left: 45 ,top: 10 ,right:45 ,bottom:10 ),
               onPressed: (){
+
                 Navigator.pushNamed(context,'/Ingreso');
               },
               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),

@@ -10,6 +10,10 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="hey_listen"
         android:icon="@mipmap/ic_launcher">
+        <uses-permission android:name=
+            "android.permission.ACCESS_COARSE_LOCATION"/>
+        <uses-permission android:name=
+            "android.permission.ACCESS_FINE_LOCATION"/>
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBbCt1Q6RvEbOTkrhb4-HFpHVw2B2lzcrM"/>
         <activity

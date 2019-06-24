@@ -1,7 +1,8 @@
 import 'dart:async';
-
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/foundation.dart';
 void main() => runApp(MapApp());
 MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
   50:const Color(0xFF3F51B5),
@@ -29,14 +30,19 @@ class MapApp extends StatelessWidget{
 class MapInitial extends StatefulWidget{
   MapInitial({Key key,this.title}) : super(key:key);
   final String title;
-
   @override
   MapInitialState createState() => MapInitialState();
 }
 class MapInitialState extends State<MapInitial>{
+  Future<bool> permisos() async{
+    GeolocationStatus geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
+    debugPrint(geolocationStatus.toString());
+    return false;
+  }
   GoogleMapController mapController;
-
   final LatLng _center = const LatLng(20.704070, -100.443852);
+  //var location = new Location();
+  Map<String, double> userLocation;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -44,6 +50,7 @@ class MapInitialState extends State<MapInitial>{
 
   @override
   Widget build(BuildContext context) {
+    permisos();
     return MaterialApp(
       home: Scaffold(
         drawer: Drawer(
@@ -83,7 +90,7 @@ class MapInitialState extends State<MapInitial>{
                 leading: Icon(Icons.exit_to_app),
                 title: Text("Salir"),
                 onTap: (){
-
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -146,7 +153,7 @@ class PerfilState extends State<Perfil>{
             subtitle: Text("Zoila Cerda"),
           ),
           ListTile(
-            title: Text("Cambiar contraseña",
+            title: Text("Cambiar usuario",
             style: TextStyle(
               fontWeight: FontWeight.bold
             ),),
