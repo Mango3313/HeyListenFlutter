@@ -20,10 +20,6 @@ class MapApp extends StatelessWidget{
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hey, Listen!',
-      initialRoute: "/",
-      routes: {
-        '/':(context) => MapInitial()
-      },
       theme: ThemeData(
         primarySwatch: ColorPrimario,
       ),
@@ -55,19 +51,27 @@ class MapInitialState extends State<MapInitial>{
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text("Drawer"),
+                child: CircleAvatar(
+                  radius: 30.0,
+                  child: ClipOval(
+                    child: Image.network("https://www.brighthope.org/wp-content/uploads/2018/09/goat.jpg"),
+                  ),
+                  backgroundColor: Colors.transparent,
+                ),
                 decoration: BoxDecoration(
                   color: Color(0xFF448AFF),
                 ),
               ),
               ListTile(
-                title: Text("Ubicaciones"),
+                leading: Icon(Icons.account_circle),
+                title: Text("Perfil"),
                 onTap: (){
-
+                  Navigator.pushNamed(context, '/usuario/profile');
                 },
               ),
               ListTile(
-                title: Text("Perfil"),
+                leading: Icon(Icons.gps_fixed),
+                title: Text("Ubicaciones"),
                 onTap: (){
 
                 },
@@ -76,15 +80,10 @@ class MapInitialState extends State<MapInitial>{
 
               ),
               ListTile(
-                title: Text("Configuración"),
-                onTap: (){
-
-                },
-              ),
-              ListTile(
+                leading: Icon(Icons.exit_to_app),
                 title: Text("Salir"),
                 onTap: (){
-                  
+
                 },
               ),
             ],
@@ -101,7 +100,75 @@ class MapInitialState extends State<MapInitial>{
             zoom: 11.0,
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: SizedBox(
+          width: 75,
+          height: 75,
+          child: FloatingActionButton(onPressed: (){},
+            backgroundColor: Colors.red,
+            mini: false,
+            child: new Icon(Icons.warning,size: 30,),
+          ),
+        ),
       ),
+    );
+  }
+}
+
+class Perfil extends StatefulWidget{
+  @override
+  PerfilState createState() => PerfilState();
+}
+class PerfilState extends State<Perfil>{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Perfil"),
+      ),
+      body: ListView(
+        children: <Widget>[
+          DrawerHeader(
+            child: CircleAvatar(
+              radius: 30.0,
+              child:
+                ClipOval(
+                  child: Image.network("https://www.brighthope.org/wp-content/uploads/2018/09/goat.jpg"),
+                ),
+            ),
+            decoration: BoxDecoration(
+              color: Color(0xFF448AFF),
+            ),
+          ),
+          ListTile(
+            title: Text("Usuario"),
+            subtitle: Text("Zoila Cerda"),
+          ),
+          ListTile(
+            title: Text("Cambiar contraseña",
+            style: TextStyle(
+              fontWeight: FontWeight.bold
+            ),),
+            onTap: (){
+
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+class Ubicaciones extends StatefulWidget{
+  @override
+  StateUbicaciones createState() => StateUbicaciones();
+}
+class StateUbicaciones extends State<Ubicaciones>{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+
     );
   }
 }
