@@ -34,7 +34,7 @@ class MapInitial extends StatefulWidget{
   MapInitialState createState() => MapInitialState();
 }
 class MapInitialState extends State<MapInitial>{
-  Future<bool> permisos() async{
+  Future<void> permisos() async{
     GeolocationStatus geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
     if(geolocationStatus == GeolocationStatus.denied){
       PermissionHandler().requestPermissions([PermissionGroup.locationWhenInUse]);
@@ -43,6 +43,7 @@ class MapInitialState extends State<MapInitial>{
   GoogleMapController mapController;
   final LatLng _center = const LatLng(20.704070, -100.443852);
   //var location = new Location();
+  var location = new Geolocator();
   Map<String, double> userLocation;
 
   void _onMapCreated(GoogleMapController controller) {
@@ -101,18 +102,29 @@ class MapInitialState extends State<MapInitial>{
           title: Text('Bienvenido'),
           backgroundColor: ColorPrimario,
         ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 18.0,
+        body: Builder(builder: (context) => Center(
+          child: GoogleMap(
+            onMapCreated: _onMapCreated,
+            myLocationEnabled: true,
+            myLocationButtonEnabled: true,
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 18.0,
+            ),
           ),
+        ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: SizedBox(
           width: 75,
           height: 75,
-          child: FloatingActionButton(onPressed: (){},
+          child: FloatingActionButton(onPressed: (){
+            _getDevPos().then(
+                (onValue){
+                  debugPrint(onValue.toString());
+                }
+            );
+          },
             backgroundColor: Colors.red,
             mini: false,
             child: new Icon(Icons.warning,size: 30,),
@@ -120,6 +132,10 @@ class MapInitialState extends State<MapInitial>{
         ),
       ),
     );
+  }
+  Future<Position> _getDevPos() async{
+    Position usrPos = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high,);
+    return usrPos;
   }
 }
 
