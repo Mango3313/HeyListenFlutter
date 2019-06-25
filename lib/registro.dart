@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'dart:convert';
 
 class Registro extends StatefulWidget{
   @override
@@ -236,12 +237,13 @@ class RegistroState extends State<Registro>{
                                     if(resValCont){
                                       Usuario usr = Usuario(_nombreController.text, _nickController.text, _telefonoController.text, _contraController.text);
                                       Map<String,String> datos = usr.toJson();
-                                      debugPrint(datos.toString());
+                                      debugPrint(Usuario.fromJson(datos).nickname);
                                       enviarPeticion(datos).then((onValue){
                                         if(onValue.isEmpty){
                                           debugPrint("Mensaje vacio");
                                         }else{
-                                          debugPrint(onValue);
+                                          final cuerpoResp = jsonDecode(onValue);
+                                            Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(cuerpoResp['message']),));
                                         }
                                       });
                                     }
@@ -284,7 +286,7 @@ class Usuario{
   final String telefono;
   final String password;
   Usuario(this.nombre,this.nickname,this.telefono,this.password);
-  Usuario.fromJson(Map<String,dynamic> json):
+  Usuario.fromJson(Map<String,String> json):
         nombre = json['nombre'],
         password = json['password'],
         telefono = json['telefono'],
