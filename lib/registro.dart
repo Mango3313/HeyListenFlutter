@@ -235,7 +235,15 @@ class RegistroState extends State<Registro>{
                                     Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(mensaje),));
                                     if(resValCont){
                                       Usuario usr = Usuario(_nombreController.text, _nickController.text, _telefonoController.text, _contraController.text);
-                                      usr.toJson();
+                                      Map<String,String> datos = usr.toJson();
+                                      debugPrint(datos.toString());
+                                      enviarPeticion(datos).then((onValue){
+                                        if(onValue.isEmpty){
+                                          debugPrint("Mensaje vacio");
+                                        }else{
+                                          debugPrint(onValue);
+                                        }
+                                      });
                                     }
                                   }
                                 },
@@ -262,8 +270,12 @@ class RegistroState extends State<Registro>{
     (_contraController.text == _rcontraController.text) ?  resultado = true :  resultado = false ;
     return resultado;
   }
-  Future <String> enviarPeticion(Cuerpo){
-    //Uri uriAlta = Uri.http('localhost:8000', '/user',Cuerpo);
+  Future <String> enviarPeticion(Cuerpo) async{
+    Uri uriAlta = new Uri.http("192.168.100.115:8000", "/user",Cuerpo);
+    Response response = await post(uriAlta);
+    String respuesta = response.body;
+    debugPrint('Respuesta!! '+respuesta);
+    return respuesta;
   }
 }
 class Usuario{
@@ -277,7 +289,7 @@ class Usuario{
         password = json['password'],
         telefono = json['telefono'],
         nickname = json['nickname'];
-  Map<String, dynamic> toJson() =>
+  Map <String, String> toJson() =>
       {
         'nombre' : nombre,
         'password' : password,
