@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './user/user.dart';
 import './registro.dart';
 import './ingreso.dart';
+import './user/detallesuser.dart';
+import './user/ubicacionesuser.dart';
 
 void main() => runApp(MyApp());
 

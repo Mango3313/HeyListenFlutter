@@ -107,19 +107,20 @@ class IngresoState extends State<Ingreso>{
                           color: Color(0xFF448AFF),
                           onPressed: (){
                             if(_nickIKey.currentState.validate() && _contraIKey.currentState.validate()){
-                              Credenciales datos = Credenciales(_nickIController.text,_contraIController.text);
-                              verificarCredenciales(datos.toJson()).then((onValue){
-                                if(onValue.isEmpty){
-                                  debugPrint("Mensaje vacio");
-                                }else{
-                                  final cuerpoResp = jsonDecode(onValue);
-                                  if(cuerpoResp['token']){
+                              //Credenciales datos = Credenciales(_nickIController.text,_contraIController.text);
+                              //verificarCredenciales(datos.toJson()).then((onValue){
+                                //if(onValue.isEmpty){
+                                  //debugPrint("Mensaje vacio");
+                                //}else{
+                                  //final cuerpoResp = jsonDecode(onValue);
+                                  //if(cuerpoResp['token']){
                                     Navigator.pushReplacementNamed(context, '/usuario');
-                                  }else{
-                                    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(cuerpoResp['message']),));
-                                  }
-                                }
-                              });
+                                  //}else{
+                                    //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(cuerpoResp['message']),));
+                                  //}
+                                //}
+                              //}
+                           //);
                             }
                           },
                           child: Text("Listo",

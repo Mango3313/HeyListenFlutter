@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 void main() => runApp(MapApp());
@@ -136,74 +136,5 @@ class MapInitialState extends State<MapInitial>{
   Future<Position> _getDevPos() async{
     Position usrPos = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high,);
     return usrPos;
-  }
-}
-
-class Perfil extends StatefulWidget{
-  @override
-  PerfilState createState() => PerfilState();
-}
-class PerfilState extends State<Perfil>{
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Perfil"),
-      ),
-      body: ListView(
-        children: <Widget>[
-          DrawerHeader(
-            child: CircleAvatar(
-              radius: 30.0,
-              child:
-                ClipOval(
-                  child: Image.network("https://www.brighthope.org/wp-content/uploads/2018/09/goat.jpg"),
-                ),
-            ),
-            decoration: BoxDecoration(
-              color: Color(0xFF448AFF),
-            ),
-          ),
-          ListTile(
-            title: Text("Usuario"),
-            subtitle: Text("Zoila Cerda"),
-          ),
-          ListTile(
-            title: Text("Cambiar usuario",
-            style: TextStyle(
-              fontWeight: FontWeight.bold
-            ),),
-            onTap: (){
-
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-class Ubicaciones extends StatefulWidget{
-  @override
-  StateUbicaciones createState() => StateUbicaciones();
-}
-class StateUbicaciones extends State<Ubicaciones>{
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Mis ubicaciones"),
-      ),
-      body:
-          ListView(
-            children: <Widget>[
-              ListTile(
-                title: Text("Ubicacion 1"),
-                trailing: Icon(Icons.delete),
-              ),
-            ],
-      ),
-    );
   }
 }
