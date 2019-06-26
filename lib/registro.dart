@@ -239,12 +239,9 @@ class RegistroState extends State<Registro>{
                                       Map<String,String> datos = usr.toJson();
                                       debugPrint(Usuario.fromJson(datos).nickname);
                                       enviarPeticion(datos).then((onValue){
-                                        if(onValue.isEmpty){
-                                          debugPrint("Mensaje vacio");
-                                        }else{
+                                        //debugPrint(onValue);
                                           final cuerpoResp = jsonDecode(onValue);
-                                            Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(cuerpoResp['message']),));
-                                        }
+                                          Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(cuerpoResp['message']),));
                                       });
                                     }
                                   }
@@ -273,8 +270,9 @@ class RegistroState extends State<Registro>{
     return resultado;
   }
   Future <String> enviarPeticion(Cuerpo) async{
-    Uri uriAlta = new Uri.http("192.168.100.115:8000", "/user",Cuerpo);
-    Response response = await post(uriAlta);
+    Uri uriAlta = new Uri.http("10.16.27.38:8008", "/user");
+    debugPrint(Cuerpo.toString());
+    Response response = await post(uriAlta,body: Cuerpo).timeout(const Duration(seconds: 10));
     String respuesta = response.body;
     debugPrint('Respuesta!! '+respuesta);
     return respuesta;

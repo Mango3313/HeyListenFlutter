@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-void main() => runApp(MapApp());
+//void main() => runApp(MapApp());
 MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
   50:const Color(0xFF3F51B5),
   100:const Color(0xFF3F51B5),
@@ -17,6 +17,8 @@ MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>
 },
 );
 class MapApp extends StatelessWidget{
+  final String datosApp;
+  MapApp(this.datosApp);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,12 +30,14 @@ class MapApp extends StatelessWidget{
 }
 }
 class MapInitial extends StatefulWidget{
+  final String dataR = "";
   MapInitial({Key key,this.title}) : super(key:key);
   final String title;
   @override
   MapInitialState createState() => MapInitialState();
 }
 class MapInitialState extends State<MapInitial>{
+  //debugPrint();
   Future<void> permisos() async{
     GeolocationStatus geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
     if(geolocationStatus == GeolocationStatus.denied){
@@ -78,13 +82,13 @@ class MapInitialState extends State<MapInitial>{
                   Navigator.pushNamed(context, '/usuario/profile');
                 },
               ),
-              ListTile(
+              /**ListTile(
                 leading: Icon(Icons.gps_fixed),
                 title: Text("Ubicaciones"),
                 onTap: (){
                   Navigator.pushNamed(context, '/usuario/ubicaciones');
                 },
-              ),
+              ),**/
               Divider(
 
               ),
@@ -121,7 +125,7 @@ class MapInitialState extends State<MapInitial>{
           child: FloatingActionButton(onPressed: (){
             _getDevPos().then(
                 (onValue){
-                  debugPrint(onValue.toString());
+
                 }
             );
           },
@@ -137,4 +141,41 @@ class MapInitialState extends State<MapInitial>{
     Position usrPos = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high,);
     return usrPos;
   }
+  Future<List<Reporte>> getReportes(authToken) async{
+    Uri ligaReportes =  Uri.http("192.168.100.115:8000", "/user",authToken);
+
+  }
+}
+class ListaReportes{
+  Map<String,String> reportes;
+  ListaReportes(this.reportes);
+  //ListaReportes.fromJson(Map<String,dynamic> json):
+      //json.forEach(f);
+  //;
+}
+class Reporte{
+  final String id;
+  final String descripcion;
+  final String impacto;
+  final double longitud;
+  final double latitud;
+  final String fecha;
+
+  Reporte(this.id,this.descripcion,this.impacto,this.longitud,this.latitud,this.fecha);
+
+  Reporte.readFromJson(Map<String,String> json):
+        id = json['_id'],
+        descripcion= json['descripcion'],
+        impacto = json['impacto'],
+        longitud = int.parse(json['longitud']).toDouble(),
+        latitud = int.parse(json['latitud']).toDouble(),
+        fecha = json['fecha'];
+  Map<String,String> toJson()=>{
+    '_id': id,
+    'descripcion': descripcion,
+    'impacto': impacto,
+    'longitud': longitud.toString(),
+    'latitud':latitud.toString(),
+    'fecha': fecha
+  };
 }

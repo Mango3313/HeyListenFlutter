@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class Perfil extends StatefulWidget{
   @override
@@ -27,11 +29,15 @@ class PerfilState extends State<Perfil>{
             ),
           ),
           ListTile(
+            title: Text("Nickname"),
+            subtitle: Text("H4ilTo"),
+          ),
+          ListTile(
             title: Text("Usuario"),
             subtitle: Text("Zoila Cerda"),
           ),
           ListTile(
-            title: Text("Cambiar usuario",
+            title: Text("Cambiar nickname",
               style: TextStyle(
                   fontWeight: FontWeight.bold
               ),),

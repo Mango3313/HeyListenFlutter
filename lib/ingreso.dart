@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
+import './user/user.dart';
 class Ingreso extends StatefulWidget{
   @override
   IngresoState createState() => IngresoState();
@@ -107,20 +108,26 @@ class IngresoState extends State<Ingreso>{
                           color: Color(0xFF448AFF),
                           onPressed: (){
                             if(_nickIKey.currentState.validate() && _contraIKey.currentState.validate()){
-                              //Credenciales datos = Credenciales(_nickIController.text,_contraIController.text);
-                              //verificarCredenciales(datos.toJson()).then((onValue){
-                                //if(onValue.isEmpty){
-                                  //debugPrint("Mensaje vacio");
-                                //}else{
-                                  //final cuerpoResp = jsonDecode(onValue);
-                                  //if(cuerpoResp['token']){
-                                    Navigator.pushReplacementNamed(context, '/usuario');
-                                  //}else{
-                                    //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(cuerpoResp['message']),));
-                                  //}
-                                //}
-                              //}
-                           //);
+                              Credenciales datos = Credenciales(_nickIController.text,_contraIController.text);
+                              verificarCredenciales(datos.toJson()).then((onValue){
+                                if(onValue.isEmpty){
+                                  debugPrint("Mensaje vacio");
+                                }else{
+                                  final cuerpoResp = jsonDecode(onValue);
+                                  if(cuerpoResp['token'] != null){
+                                    Navigator.pushReplacement(context,
+                                        new MaterialPageRoute(builder: (BuildContext context) =>
+                                        MapApp(
+                                            cuerpoResp
+                                        )
+                                        )
+                                    );
+                                  }else{
+                                    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(cuerpoResp['message']),));
+                                  }
+                                }
+                              }
+                           );
                             }
                           },
                           child: Text("Listo",
@@ -139,8 +146,8 @@ class IngresoState extends State<Ingreso>{
     );
   }
   Future<String> verificarCredenciales(datosAcceso) async{
-    Uri uriAlta = new Uri.http("192.168.100.115:8000", "/login",datosAcceso);
-    Response response = await post(uriAlta).timeout(const Duration(seconds: 2));
+    Uri uriAlta = new Uri.http("10.16.27.38:8008", "/login");
+    Response response = await post(uriAlta,body: datosAcceso).timeout(const Duration(seconds: 10));
     String respuesta = response.body;
     debugPrint('Respuesta!! '+respuesta);
     return respuesta;
