@@ -77,7 +77,11 @@ class PerfilState extends State<Perfil>{
     Usuario usr = Usuario.fromJson(jsonRes['datos_usuario']);
     return usr;
   }
-  Futu
+  Future<String> updateUsuarioDatos(String token,String nombre,String password,String nPassword)async{
+    //TODO: actualizar datos
+    Uri datosAcUri = Uri.http("heylisten-mm.herokuapp.com", "/user");
+    Response response = await put(datosAcUri);
+  }
 }
 class Usuario{
   final String nombre;
