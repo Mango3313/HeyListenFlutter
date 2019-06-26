@@ -126,11 +126,6 @@ class DialogState extends State<CustomDialog>{
                             debugPrint(jsonEncode(body).toString());
                             sendCoordenadas(header, jsonEncode(body)).then((rString){
                                 Navigator.of(context).pop(); // To close the dialog
-                                Builder(
-                                    builder: (context) {
-                                      Scaffold.of(context).showSnackBar(new SnackBar(content: Text(jsonDecode(rString)['message'])));
-                                    }
-                                );
                             });
                           });
                         },

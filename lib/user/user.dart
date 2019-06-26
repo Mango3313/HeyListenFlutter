@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import './dialog/CustomDialog.dart';
+import './detallesuser.dart';
 //void main() => runApp(MapApp());
 MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
   50:const Color(0xFF3F51B5),
@@ -86,7 +87,8 @@ class MapInitialState extends State<MapInitial>{
                 leading: Icon(Icons.account_circle),
                 title: Text("Perfil"),
                 onTap: (){
-                  Navigator.pushNamed(context, '/usuario/profile');
+                  Navigator.push(context, new MaterialPageRoute(builder: (builder)=>
+                  Perfil(datos: datosRe,)));
                 },
               ),
               /**ListTile(
