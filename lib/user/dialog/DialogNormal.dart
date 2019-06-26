@@ -25,20 +25,36 @@ class DialogNState extends State<DialogN>{
       ),
       elevation: 0.0,
       //backgroundColor: Colors.transparent,
-      child: Column(
-        children: <Widget>[
-          Text(_titulo),
-          SizedBox(),
-          Text(_mensaje),
-          SizedBox(),
-          Row(
-            children: <Widget>[
-              FlatButton(
-                child: Text("Ok"),
-              )
-            ],
-          ),
-        ],
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(_titulo,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            ),
+            SizedBox(height: 10,),
+            Text(_mensaje,
+            style: TextStyle(
+              fontSize: 16
+            ),),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FlatButton(
+                  child: Text("Ok"),
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

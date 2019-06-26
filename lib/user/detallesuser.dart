@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
+import './dialog/DialogNormal.dart';
+import './dialog/DialogUser.dart';
 
 class Perfil extends StatefulWidget{
   final Map<String,dynamic> datos;
@@ -17,9 +19,22 @@ class PerfilState extends State<Perfil>{
     // TODO: implement initState
     super.initState();
     _datos = widget.datos;
-    getUsusrioDatos(_datos['token']).then((onValue){
-      nombre = onValue.nombre;
-      nickname = onValue.nickname;
+    debugPrint("T1: "+_datos['token']);
+    Map<String,String> header = {
+      "Content-Type":"application/json",
+      "Authorization":"Bearer "+_datos['token'],
+    };
+    debugPrint("H1: "+jsonEncode(header));
+    getUsusrioDatos(header).then((onValue){
+      setState(() {
+        nombre = onValue.nombre;
+        nickname = onValue.nickname;
+      });
+    }).catchError((error){
+      showDialog(context: context,
+          builder: (BuildContext context)=>
+              DialogN(titulo: "Error",mensaje: error.toString(),)
+      );
     });
   }
   @override
@@ -57,36 +72,30 @@ class PerfilState extends State<Perfil>{
                   fontWeight: FontWeight.bold
               ),),
             onTap: (){
-
+              showDialog(context: context,
+              builder: (BuildContext context) =>
+                  DialogEditUser(token: _datos['token'],)
+              );
             },
           ),
         ],
       ),
     );
   }
-  Future<Usuario> getUsusrioDatos(String token) async{
-    debugPrint("Token: "+token);
+  Future<Usuario> getUsusrioDatos(header) async{
+    debugPrint("Header: "+header.toString());
     Uri datosUri = Uri.http("heylisten-mm.herokuapp.com", "/user");
-    Map<String,String> header = {
-      //"Content-Type":"application/x-www-form-urlencoded",
-      "Authentication":"Bearer "+token,
-    };
     Response response = await get(datosUri,headers: header);
     Map<String,dynamic> jsonRes = jsonDecode(response.body);
-    debugPrint(response.body);
+    //debugPrint("Nuevo json: "+jsonRes['datos_usuario']);
     Usuario usr = Usuario.fromJson(jsonRes['datos_usuario']);
     return usr;
-  }
-  Future<String> updateUsuarioDatos(String token,String nombre,String password,String nPassword)async{
-    //TODO: actualizar datos
-    Uri datosAcUri = Uri.http("heylisten-mm.herokuapp.com", "/user");
-    Response response = await put(datosAcUri);
   }
 }
 class Usuario{
   final String nombre;
   final String nickname;
-  final int id;
+  final String id;
   final String password;
   Usuario(this.nombre,this.nickname,this.id,this.password);
   Usuario.fromJson(Map<String,dynamic> json):
