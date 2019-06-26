@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import './dialog/CustomDialog.dart';
 //void main() => runApp(MapApp());
 MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
   50:const Color(0xFF3F51B5),
@@ -17,8 +18,8 @@ MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>
 },
 );
 class MapApp extends StatelessWidget{
-  final String datosApp;
-  MapApp(this.datosApp);
+  //final String datosApp;
+  //MapApp(this.datosApp);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,14 +31,19 @@ class MapApp extends StatelessWidget{
 }
 }
 class MapInitial extends StatefulWidget{
-  final String dataR = "";
-  MapInitial({Key key,this.title}) : super(key:key);
+  final Map<String,dynamic> dataR;
   final String title;
+  MapInitial({Key key,this.title,@required this.dataR}) : super(key:key);
   @override
   MapInitialState createState() => MapInitialState();
 }
 class MapInitialState extends State<MapInitial>{
-  //debugPrint();
+  Map<String,dynamic> datosRe;
+  @override
+  void initState() {
+    datosRe = widget.dataR;
+    super.initState();
+  }
   Future<void> permisos() async{
     GeolocationStatus geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
     if(geolocationStatus == GeolocationStatus.denied){
@@ -56,6 +62,7 @@ class MapInitialState extends State<MapInitial>{
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(datosRe.toString());
     permisos();
     return MaterialApp(
       home: Scaffold(
@@ -123,11 +130,13 @@ class MapInitialState extends State<MapInitial>{
           width: 75,
           height: 75,
           child: FloatingActionButton(onPressed: (){
-            _getDevPos().then(
-                (onValue){
-
-                }
-            );
+            //_getDevPos().then(
+                //(onValue){
+                  showDialog(context: context,
+                    builder: (BuildContext context) => CustomDialog(mapa: datosRe,),
+                  );
+                //}
+            //);
           },
             backgroundColor: Colors.red,
             mini: false,
@@ -137,12 +146,8 @@ class MapInitialState extends State<MapInitial>{
       ),
     );
   }
-  Future<Position> _getDevPos() async{
-    Position usrPos = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high,);
-    return usrPos;
-  }
   Future<List<Reporte>> getReportes(authToken) async{
-    Uri ligaReportes =  Uri.http("192.168.100.115:8000", "/user",authToken);
+    Uri ligaReportes =  Uri.http("heylisten-mm.herokuapp.com", "/user",authToken);
 
   }
 }

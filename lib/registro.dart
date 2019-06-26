@@ -270,7 +270,7 @@ class RegistroState extends State<Registro>{
     return resultado;
   }
   Future <String> enviarPeticion(Cuerpo) async{
-    Uri uriAlta = new Uri.http("10.16.27.38:8008", "/user");
+    Uri uriAlta = new Uri.http("heylisten-mm.herokuapp.com", "/user");
     debugPrint(Cuerpo.toString());
     Response response = await post(uriAlta,body: Cuerpo).timeout(const Duration(seconds: 10));
     String respuesta = response.body;
