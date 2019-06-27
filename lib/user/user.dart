@@ -7,6 +7,8 @@ import 'package:http/http.dart';
 import './dialog/CustomDialog.dart';
 import './detallesuser.dart';
 import 'dart:convert';
+import './detalles_reporte.dart';
+import 'package:flutter/services.dart';
 //void main() => runApp(MapApp());
 MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
   50:const Color(0xFF3F51B5),
@@ -50,6 +52,17 @@ class MapInitialState extends State<MapInitial>{
       debugPrint(onValue.toString());
       setState(() {
         markers = onValue;
+      });
+    });
+    SystemChannels.lifecycle.setMessageHandler((msg){
+      debugPrint('SystemChannels> $msg');
+      if(msg==AppLifecycleState.resumed.toString())setState((){
+        getReportes(datosRe['token']).then((onValue){
+          debugPrint(onValue.toString());
+          setState(() {
+            markers = onValue;
+          });
+        });
       });
     });
     super.initState();
@@ -133,6 +146,14 @@ class MapInitialState extends State<MapInitial>{
               target: _center,
               zoom: 18.0,
             ),
+            onTap: (value){
+              getReportes(datosRe['token']).then((onValue){
+                debugPrint(onValue.toString());
+                setState(() {
+                  markers = onValue;
+                });
+              });
+            },
             markers: Set<Marker>.of(markers.values),
           ),
         ),
@@ -178,7 +199,12 @@ class MapInitialState extends State<MapInitial>{
         //icon: returnValue,
         markerId: marker,
         position: new LatLng(r.latitud, r.longitud),
+        onTap: (){
+          debugPrint(datosRe['token']);
+          Navigator.push(context,new MaterialPageRoute(builder: (context)=> DetalleReporte(id:r.id,token:datosRe['token'],))).then((onVal){
+          });
 
+        }
       );//LatLng(r.latitud, r.longitud);
     });
     return reporte;
