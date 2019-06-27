@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import './user/user.dart';
+import './Propiedades.dart';
 class Ingreso extends StatefulWidget{
   @override
   IngresoState createState() => IngresoState();

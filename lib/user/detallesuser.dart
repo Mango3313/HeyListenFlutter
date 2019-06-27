@@ -76,6 +76,16 @@ class PerfilState extends State<Perfil>{
               builder: (BuildContext context) =>
                   DialogEditUser(token: _datos['token'],)
               );
+              Map<String,String> header = {
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+_datos['token'],
+              };
+              getUsusrioDatos(header).then((onValue){
+                setState(() {
+                  nombre = onValue.nombre;
+                  nickname = onValue.nickname;
+                });
+              });
             },
           ),
         ],
@@ -110,4 +120,134 @@ class Usuario{
         'id' : id,
         'nickname' : nickname,
       };
+}
+class DialogEditUser extends StatefulWidget{
+  final String token;
+  //final String mensaje;
+  DialogEditUser({Key key,this.token//,this.mensaje
+  }):
+        super(key:key);
+  DialogEditState createState() => DialogEditState();
+}
+class DialogEditState extends State<DialogEditUser>{
+  String _token;
+  String _mensaje;
+  TextEditingController _controlNombre = new TextEditingController();
+  TextEditingController _controlPassword = new TextEditingController();
+  TextEditingController _controlNPassword = new TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _token = widget.token;
+    // _mensaje = widget.mensaje;
+  }
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      elevation: 0.0,
+      //backgroundColor: Colors.transparent,
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text("Editar información",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10,),
+            TextFormField(
+              controller: _controlNombre,
+              decoration: InputDecoration(
+                  labelText: "Nombre",
+                  hintText: "P@sword"
+              ),
+            ),
+            SizedBox(height: 10,),
+            TextFormField(
+              controller: _controlPassword,
+              decoration: InputDecoration(
+                  labelText: "Contraseña",
+                  hintText: "P@sword"
+              ),
+            ),
+            SizedBox(height: 10,),
+            TextFormField(
+              controller: _controlNPassword,
+              decoration: InputDecoration(
+                  labelText: "Nueva Contraseña",
+                  hintText: "P@sword"
+              ),
+            ),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FlatButton(
+                  child: Text("Ok"),
+                  onPressed: (){
+                    debugPrint(_token);
+                    updateUsuarioDatos(_token, _controlNombre.text, _controlPassword.text, _controlNPassword.text).then((onValue){
+                      Navigator.of(context).pop();
+                      debugPrint(onValue);
+                      showDialog(
+                        context: context,
+                        builder:(BuildContext context)=>
+                            DialogN(
+                              titulo: "Atención",
+                              mensaje: onValue,
+                            ),
+                      );
+                    });
+                  },
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  Future<String> updateUsuarioDatos(String token,String nombre,String password,String nPassword)async{
+    //TODO: actualizar datos
+    debugPrint(token);
+    Uri datosAcUri = Uri.http("heylisten-mm.herokuapp.com", "/user");
+    Map<String,String> header={
+      'Content-Type':'application/json',
+      'Authorization': "Bearer "+token,
+    };
+    Map<String,dynamic> body = {
+      "nombre": nombre,
+      "password": password,
+      "new_password":nPassword,
+    };
+    Response response = await put(datosAcUri,headers: header,body:jsonEncode(body));
+    Map<String,dynamic> jsonDyn = jsonDecode(response.body);
+    if(jsonDyn.containsKey('message')){
+      return jsonDyn['message'];
+    }
+    else{
+      setState(() {
+        //_token = jsonDyn["token"];
+      });
+      return "Datos cambiados con exito";
+    }
+
+  }
+  Future<Usuario> getUsusrioDatos(header) async{
+    debugPrint("Header: "+header.toString());
+    Uri datosUri = Uri.http("heylisten-mm.herokuapp.com", "/user");
+    Response response = await get(datosUri,headers: header);
+    Map<String,dynamic> jsonRes = jsonDecode(response.body);
+    //debugPrint("Nuevo json: "+jsonRes['datos_usuario']);
+    Usuario usr = Usuario.fromJson(jsonRes['datos_usuario']);
+    return usr;
+  }
 }

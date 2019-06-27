@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart';
 import './dialog/CustomDialog.dart';
 import './detallesuser.dart';
+import 'dart:convert';
 //void main() => runApp(MapApp());
 MaterialColor ColorPrimario = const MaterialColor (0xFF3F51B5, const <int,Color>{
   50:const Color(0xFF3F51B5),
@@ -40,9 +42,16 @@ class MapInitial extends StatefulWidget{
 }
 class MapInitialState extends State<MapInitial>{
   Map<String,dynamic> datosRe;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   @override
   void initState() {
     datosRe = widget.dataR;
+    getReportes(datosRe['token']).then((onValue){
+      debugPrint(onValue.toString());
+      setState(() {
+        markers = onValue;
+      });
+    });
     super.initState();
   }
   Future<void> permisos() async{
@@ -124,6 +133,7 @@ class MapInitialState extends State<MapInitial>{
               target: _center,
               zoom: 18.0,
             ),
+            markers: Set<Marker>.of(markers.values),
           ),
         ),
         ),
@@ -136,7 +146,14 @@ class MapInitialState extends State<MapInitial>{
                 //(onValue){
                   showDialog(context: context,
                     builder: (BuildContext context) => CustomDialog(mapa: datosRe,),
-                  );
+                  ).then((Dinamico){
+            getReportes(datosRe['token']).then((onValue){
+              debugPrint(onValue.toString());
+              setState(() {
+                markers = onValue;
+              });
+            });
+                  });
                 //}
             //);
           },
@@ -148,10 +165,30 @@ class MapInitialState extends State<MapInitial>{
       ),
     );
   }
-  Future<List<Reporte>> getReportes(authToken) async{
-    Uri ligaReportes =  Uri.http("heylisten-mm.herokuapp.com", "/user",authToken);
+  Future<Map<MarkerId, Marker>> getReportes(authToken) async{
+    Uri ligaReportes =  Uri.http("heylisten-mm.herokuapp.com", "/report");
+    Response res = await get(ligaReportes);
+    //Future<BitmapDescriptor> returnValue = _createMarkerImageFromAsset("assets/siren.png");
+    Map<MarkerId, Marker> reporte = {};
+    List<dynamic> jArray = jsonDecode(res.body);
+    jArray.forEach((v){
+      Reporte r = new Reporte.readFromJson(v);
+      MarkerId marker = new MarkerId(r.id);
+      reporte[marker] = new Marker(
+        //icon: returnValue,
+        markerId: marker,
+        position: new LatLng(r.latitud, r.longitud),
 
+      );//LatLng(r.latitud, r.longitud);
+    });
+    return reporte;
   }
+  /**Future <BitmapDescriptor> _createMarkerImageFromAsset(String iconPath) async {
+       ImageConfiguration configuration = ImageConfiguration();
+                  BitmapDescriptor bmpd = await BitmapDescriptor.fromAssetImage(
+                  configuration, iconPath);return bmpd;
+      }
+      **/
 }
 class ListaReportes{
   Map<String,String> reportes;
@@ -163,21 +200,21 @@ class ListaReportes{
 class Reporte{
   final String id;
   final String descripcion;
-  final String impacto;
+  final int impacto;
   final double longitud;
   final double latitud;
   final String fecha;
 
   Reporte(this.id,this.descripcion,this.impacto,this.longitud,this.latitud,this.fecha);
 
-  Reporte.readFromJson(Map<String,String> json):
+  Reporte.readFromJson(Map<String,dynamic> json):
         id = json['_id'],
         descripcion= json['descripcion'],
         impacto = json['impacto'],
-        longitud = int.parse(json['longitud']).toDouble(),
-        latitud = int.parse(json['latitud']).toDouble(),
+        longitud = json['longitud'],
+        latitud = json['latitud'],
         fecha = json['fecha'];
-  Map<String,String> toJson()=>{
+  Map<String,dynamic> toJson()=>{
     '_id': id,
     'descripcion': descripcion,
     'impacto': impacto,
